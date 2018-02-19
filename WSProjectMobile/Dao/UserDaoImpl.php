@@ -29,7 +29,7 @@ class UserDaoImpl {
 
     public function addUser(User $user) {
         $link = PDOUtil::createPDOConnection();
-        $query = "INSERT INTO user(name,email,password) VALUES (?,?,?,?)";
+        $query = "INSERT INTO user(name,email,password) VALUES (?,?,?)";
         $stmt = $link->prepare($query);
         $stmt->bindValue(1, $user->getName(), PDO::PARAM_STR);
         $stmt->bindValue(2, $user->getEmail(), PDO::PARAM_STR);

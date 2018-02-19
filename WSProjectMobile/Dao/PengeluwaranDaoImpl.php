@@ -41,8 +41,8 @@ class PengeluwaranDaoImpl {
         $stmt->bindValue(2, $pengeluwaran->getJumlahPengeluwaran(), PDO::PARAM_INT);
         $stmt->bindValue(3, $pengeluwaran->getInformationPengeluwaran(), PDO::PARAM_STR);
         $stmt->bindValue(4, $pengeluwaran->getWaktuPengeluwaran(), PDO::PARAM_STR);
-        $stmt->bindValue(4, $pengeluwaran->getUser()->getIdUser(), PDO::PARAM_INT);
-        $stmt->bindValue(5, $pengeluwaran->getCategoryPengeluwaran()->getIdCategoryPengeluwaran(), PDO::PARAM_INT);
+        $stmt->bindValue(5, $pengeluwaran->getUser()->getIdUser(), PDO::PARAM_INT);
+        $stmt->bindValue(6, $pengeluwaran->getCategoryPengeluwaran()->getIdCategoryPengeluwaran(), PDO::PARAM_INT);
         $link->beginTransaction();
         if($stmt->execute()){
             $link->commit();
