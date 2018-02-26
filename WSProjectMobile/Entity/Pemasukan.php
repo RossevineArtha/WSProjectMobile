@@ -18,7 +18,15 @@ class Pemasukan {
     private $jumlahPemasukan;
     private $informationPemasukan;
     private $waktuPemasukan;
+    /**
+     *
+     * @var CategoryPemasukan
+     */
     private $categoryPemasukan;
+    /**
+     *
+     * @var User
+     */
     private $userID;
     
     public function __construct() {

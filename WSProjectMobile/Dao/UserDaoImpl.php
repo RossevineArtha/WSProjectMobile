@@ -12,35 +12,52 @@
  * @author LENOVO
  */
 class UserDaoImpl {
-    
 
-     public function login(User $user) {
-        $link = PDOUtil::createPDOConnection();
-        $query = "SELECT name FROM user  WHERE email = ? AND password = PASSWORD(?) LIMIT 1";
-        $stmt = $link->prepare($query);
-        $stmt->bindValue(1, $user->getEmail(), PDO::PARAM_STR);
-        $stmt->bindValue(2, $user->getPassword(), PDO::PARAM_STR);
-        $stmt->setFetchMode(PDO::FETCH_OBJ);
-        $stmt->execute();
-        $result = $stmt->fetch();
-        PDOUtil::closePDOConnection($link);
-        return $result;
+    /**
+     *
+     * @var User
+     */
+    private $data;
+
+    function setData(User $data) {
+        $this->data = $data;
     }
 
-    public function addUser(User $user) {
-        $link = PDOUtil::createPDOConnection();
-        $query = "INSERT INTO user(name,email,password) VALUES (?,?,?)";
-        $stmt = $link->prepare($query);
-        $stmt->bindValue(1, $user->getName(), PDO::PARAM_STR);
-        $stmt->bindValue(2, $user->getEmail(), PDO::PARAM_STR);
-        $stmt->bindValue(3, $user->getPasseword(), PDO::PARAM_STR);
-        $link->beginTransaction();
-        if ($stmt->execute()) {
-            $link->commit();
-        } else {
-            $link->rollBack();
+    public function login() {
+        if (isset($this->data) && !empty($this->data)) {
+           
+            $query = "SELECT * FROM user WHERE email = ? AND password = MD5(?) LIMIT 1";
+             $link = PDOUtil::createPDOConnection();
+            $stmt = $link->prepare($query);
+            $stmt->bindValue(1, $this->data->getEmail(), PDO::PARAM_STR);
+            $stmt->bindValue(2, $this->data->getPassword(), PDO::PARAM_STR);
+            $stmt->setFetchMode(PDO::FETCH_OBJ);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            $this->data = null;
+            PDOUtil::closePDOConnection($link);
+            return $result;
         }
-        PDOUtil::closePDOConnection($link);
+        return NULL;
+    }
+
+    public function addUser() {
+        if (isset($this->data) && !empty($this->data)) {
+            $link = PDOUtil::createPDOConnection();
+            $query = "INSERT INTO user(name,email,password) VALUES (?,?,MD5(?))";
+            $stmt = $link->prepare($query);
+            $stmt->bindValue(1, $this->data->getName(), PDO::PARAM_STR);
+            $stmt->bindValue(2, $this->data->getEmail(), PDO::PARAM_STR);
+            $stmt->bindValue(3, $this->data->getPassword(), PDO::PARAM_STR);
+            $link->beginTransaction();
+            if ($stmt->execute()) {
+                $link->commit();
+            } else {
+                $link->rollBack();
+            }
+            PDOUtil::closePDOConnection($link);
+        }
+        
     }
 
 }

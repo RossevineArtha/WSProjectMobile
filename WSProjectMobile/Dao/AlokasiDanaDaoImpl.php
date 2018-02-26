@@ -13,6 +13,16 @@
  */
 class AlokasiDanaDaoImpl {
 
+    /**
+     *
+     * @var AlokasiDana
+     */
+    private $data;
+
+    function setData($data) {
+        $this->data = $data;
+    }
+
     public function getAllAlokasiDana() {
         $link = PDOUtil::createPDOConnection();
         $query = "SELECT * FROM alokasidana";
@@ -34,30 +44,33 @@ class AlokasiDanaDaoImpl {
         return $result;
     }
 
-    public function addAlokasiDana(AlokasiDana $alokasiDana) {
-        $link = PDOUtil::createPDOConnection();
-        $query = "INSERT INTO alokasidana(namaAlokasiDana, jumlahAlokasiDana, user_idUser) VALUES (?,?,?)";
-        $stmt = $link->prepare($query);
-        $stmt->bindValue(1, $alokasiDana->getNamaAlokasi(), PDO::PARAM_STR);
-        $stmt->bindValue(2, $alokasiDana->getJumlahAlokasi(), PDO::PARAM_INT);
-        $stmt->bindValue(3, $alokasiDana->getIdUser()->getId(), PDO::PARAM_INT);
-        $link->beginTransaction();
-        if ($stmt->execute()) {
-            $link->commit();
-        } else {
-            $link->rollBack();
+    public function addAlokasiDana() {
+        if (isset($this->data) && !empty($this->data)) {
+            $link = PDOUtil::createPDOConnection();
+            $query = "INSERT INTO alokasidana(namaAlokasiDana, jumlahAlokasiDana, dateAwal, dateAkhir, idUser) VALUES (?, ?, ?, ?, ?)";
+            $stmt = $link->prepare($query);
+            $stmt->bindValue(1, $this->data->getNamaAlokasi(), PDO::PARAM_STR);
+            $stmt->bindValue(2, $this->data->getJumlahAlokasi(), PDO::PARAM_INT);
+            $stmt->bindValue(3, $this->data->getDateAwal(), PDO::PARAM_STR);
+            $stmt->bindValue(4, $this->data->getDateAkhir(), PDO::PARAM_STR);
+            $stmt->bindValue(5, $this->data->getIdUser()->getId(), PDO::PARAM_INT);
+              $result = $stmt->execute();
+            DBUtil::closePDOConnection($link);
+            return $result;
         }
-        PDOUtil::closePDOConnection($link);
+        return NULL;
     }
 
     public function updateAlokasiDana(AlokasiDana $alokasiDana) {
         $link = PDOUtil::createPDOConnection();
-        $query = "UPDATE alokasidana SET namaAlokasiDana=?,jumlahAlokasiDana=?,user_idUser=? WHERE idAlokasiDana=?";
+        $query = "UPDATE alokasidana SET namaAlokasiDana=?,jumlahAlokasiDana=?,dateAwal=?,dateAkhir=?,idUser=? WHERE idAlokasiDana=?";
         $stmt = $link->prepare($query);
         $stmt->bindValue(1, $alokasiDana->getNamaAlokasi(), PDO::PARAM_STR);
         $stmt->bindValue(2, $alokasiDana->getJumlahAlokasi(), PDO::PARAM_INT);
-        $stmt->bindValue(3, $alokasiDana->getIdUser()->getId(), PDO::PARAM_INT);
-        
+        $stmt->bindValue(3, $alokasiDana->getDateAwal(), PDO::PARAM_STR);
+        $stmt->bindValue(4, $alokasiDana->getDateAkhir(), PDO::PARAM_STR);
+        $stmt->bindValue(5, $alokasiDana->getIdUser()->getId(), PDO::PARAM_INT);
+
         $link->beginTransaction();
         if ($stmt->execute()) {
             $link->commit();

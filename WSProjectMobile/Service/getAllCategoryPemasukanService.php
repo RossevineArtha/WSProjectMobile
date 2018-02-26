@@ -7,23 +7,16 @@
  */
 
 include_once '../entity/CategoryPemasukan.php';
-include_once '../dao/CategoryPemasukanDaoImpl.php.php';
+include_once '../dao/CategoryPemasukanDaoImpl.php';
 include_once '../util/PDOUtil.php';
 
-$apiKey = filter_input(INPUT_GET, 'api_key');
-header("content-type:application/json");
-if (isset($apiKey)) {
+
     $catePemasukanDaoImpl = new CategoryPemasukanDaoImpl();
     $result = $catePemasukanDaoImpl->getAllCategoryPemasukan();
     $catepenmasukk = array();
-    /* @var $book Book */
+    
     foreach ($result as $p) {
-        array_push($catepenmasukk, $p);
+        array_push($catepenmasukk, $p->getName());
     }
+    header("content-type:application/json");
     echo json_encode($catepenmasukk);
-} else {
-    $jsonData = array();
-    $jsonData['status'] = 2;
-    $jsonData['message'] = 'API Key not recognized';
-    echo json_encode($jsonData);
-}

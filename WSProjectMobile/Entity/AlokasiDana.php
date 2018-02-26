@@ -16,8 +16,15 @@ class AlokasiDana {
     private $idAlokasiDana;
     private $namaAlokasi;
     private $jumlahAlokasi;
+    /**
+     *
+     * @var User
+     */
     private $idUser;
-  
+    private $dateAwal;
+    private $dateAkhir;
+
+
 
     public function __construct() {
         $this->userID = new User();
@@ -53,8 +60,23 @@ class AlokasiDana {
     function setIdUser($idUser) {
         $this->idUser = $idUser;
     }
+    function getDateAwal() {
+        return $this->dateAwal;
+    }
 
-          
+    function getDateAkhir() {
+        return $this->dateAkhir;
+    }
+
+    function setDateAwal($dateAwal) {
+        $this->dateAwal = $dateAwal;
+    }
+
+    function setDateAkhir($dateAkhir) {
+        $this->dateAkhir = $dateAkhir;
+    }
+
+              
     public function jsonSerialize() {
         return get_object_vars($this);
     }

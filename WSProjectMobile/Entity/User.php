@@ -11,12 +11,12 @@
  *
  * @author LENOVO
  */
-class User {
+class User implements JsonSerializable{
 
     private $id;
     private $name;
     private $email;
-    private $passeword;
+    private $password;
 
     function getEmail() {
         return $this->email;
@@ -35,8 +35,8 @@ class User {
     }
 
  
-    function getPasseword() {
-        return $this->passeword;
+    function getPassword() {
+        return $this->password;
     }
 
     function setId($id) {
@@ -49,8 +49,8 @@ class User {
 
 
 
-    function setPasseword($passeword) {
-        $this->passeword = $passeword;
+    function setPassword($passeword) {
+        $this->password = $passeword;
     }
 
     public function jsonSerialize() {
